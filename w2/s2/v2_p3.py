@@ -7,28 +7,33 @@
 #      Then access each element from the freq_map, if it exists, subtract 1 each time. 
 
 ## Done outside of class. 
+## Final logic looked by seeing Plan part of solution, not code. 
 def get_hint(secret, guess):
-    char_set = {}
-    for i in secret:
-        if i in char_set:
-            char_set[i] +=1
-        else:
-            char_set[i] = 1
-    correct_indexes = set()
-    cows = 0
-    bulls = 0
-    for i in range(len(guess)):
-        if secret[i] == guess[i]:
-            correct_indexes.add(i)
+    secret_counts = {}
+    guess_counts = {}
+
+    bulls, cows = 0,0
+
+    for i in range(len(secret)):
+        if guess[i] == secret[i]:
             bulls+=1
-            char_set[secret[i]]-=1
-    for i in range(len(guess)):
-        if guess[i] in char_set and i not in correct_indexes:
-            if char_set[guess[i]] > 0:
-                cows +=1
-                char_set[guess[i]]-=1
-    char_str = f'{bulls}A{cows}B'
-    return char_str
+        else:
+            if guess[i] in guess_counts:
+                guess_counts[guess[i]] +=1
+            else:
+                guess_counts[guess[i]] = 1
+            if secret[i] in secret_counts:
+                secret_counts[secret[i]] +=1
+            else:
+                secret_counts[secret[i]] = 1
+    
+    for key,val in guess_counts.items():
+        if key in secret_counts:
+            cows+= min(guess_counts[key], secret_counts[key])
+    
+    return f'{bulls}A{cows}B'
+
+
 
 
 
