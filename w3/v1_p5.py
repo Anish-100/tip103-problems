@@ -12,19 +12,25 @@ It can be represented as (A), where A is a valid layout.
 """
 def make_balanced_room(s):
     l = 0
-    r = 0   
-    length = len(s)
+    r = len(s) -1
+    stack = []
+    second_stack = []
+    index_stack = []
 
-    while l < r:
-        temp = r
-        if s[l] == '(':
-            while temp > l:
-                if s[temp] == ')':
-                    r = temp
-                temp -=1
-            if r != temp:
-                s.remove(l)
-        l+=1
+    for i in range(len(s)):
+        if s[i] == '(':
+            stack.append(s[i])
+            index_stack.append(i)
+        elif s[i] == ')':
+            if len(stack) == 0:
+                second_stack.append(i)
+                continue
+            stack.pop()
+            index_stack.pop()
+    for i in index_stack:
+        s = s[:i] +s[i+1:]
+    for i in second_stack:
+        s = s[:i] +s[i+1:]
     return s
 
 print(make_balanced_room("art(t(d)e)sign)")) 
